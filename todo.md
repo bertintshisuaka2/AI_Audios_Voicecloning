@@ -22,3 +22,8 @@
 
 - [x] Support for feminine voice options (in addition to masculine)
 - [x] Voice selection UI showing both masculine and feminine pre-built voices
+
+
+## Bugs to Fix
+
+- [x] Fix ElevenLabs API "Unauthorized" error when fetching voices

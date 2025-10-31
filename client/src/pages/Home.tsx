@@ -256,8 +256,18 @@ export default function Home() {
                           ))}
                         </>
                       )}
+                      {(!availableVoices || availableVoices.length === 0) && (!myClones || myClones.length === 0) && (
+                        <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                          No voices available. Please configure your ElevenLabs API key in Settings.
+                        </div>
+                      )}
                     </SelectContent>
                   </Select>
+                  {!voicesLoading && (!availableVoices || availableVoices.length === 0) && (!myClones || myClones.length === 0) && (
+                    <p className="text-xs text-amber-600">
+                      ⚠️ No voices available. Please add your ElevenLabs API key in Settings → Secrets to enable voice generation.
+                    </p>
+                  )}
                 </div>
 
                 <Button

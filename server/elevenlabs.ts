@@ -31,21 +31,28 @@ export interface TextToSpeechParams {
  */
 export async function getElevenLabsVoices(): Promise<ElevenLabsVoice[]> {
   if (!ELEVENLABS_API_KEY) {
-    throw new Error("ELEVENLABS_API_KEY is not configured");
+    console.warn("ELEVENLABS_API_KEY is not configured");
+    return [];
   }
 
-  const response = await fetch(`${ELEVENLABS_BASE_URL}/voices`, {
-    headers: {
-      "xi-api-key": ELEVENLABS_API_KEY,
-    },
-  });
+  try {
+    const response = await fetch(`${ELEVENLABS_BASE_URL}/voices`, {
+      headers: {
+        "xi-api-key": ELEVENLABS_API_KEY,
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch voices: ${response.statusText}`);
+    if (!response.ok) {
+      console.error(`Failed to fetch voices: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const data = await response.json();
+    return data.voices || [];
+  } catch (error) {
+    console.error("Error fetching ElevenLabs voices:", error);
+    return [];
   }
-
-  const data = await response.json();
-  return data.voices || [];
 }
 
 /**
