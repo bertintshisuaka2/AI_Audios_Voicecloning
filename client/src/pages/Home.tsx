@@ -21,6 +21,7 @@ export default function Home() {
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [cloneName, setCloneName] = useState("");
   const [enableTranslation, setEnableTranslation] = useState(false);
+  const [sourceLanguage, setSourceLanguage] = useState("Auto-detect");
   const [targetLanguage, setTargetLanguage] = useState("English");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -85,6 +86,7 @@ export default function Home() {
       text: text.trim(),
       voiceId: selectedVoiceId,
       voiceName: selectedVoiceName,
+      sourceLanguage: enableTranslation && sourceLanguage !== "Auto-detect" ? sourceLanguage : undefined,
       targetLanguage: enableTranslation ? targetLanguage : undefined,
     });
   };
@@ -292,30 +294,58 @@ export default function Home() {
                     />
                   </div>
                   {enableTranslation && (
-                    <div className="space-y-2">
-                      <Label htmlFor="targetLanguage" className="text-sm">Target Language</Label>
-                      <Select value={targetLanguage} onValueChange={setTargetLanguage}>
-                        <SelectTrigger id="targetLanguage">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="English">English</SelectItem>
-                          <SelectItem value="Spanish">Spanish (Español)</SelectItem>
-                          <SelectItem value="French">French (Français)</SelectItem>
-                          <SelectItem value="German">German (Deutsch)</SelectItem>
-                          <SelectItem value="Italian">Italian (Italiano)</SelectItem>
-                          <SelectItem value="Portuguese">Portuguese (Português)</SelectItem>
-                          <SelectItem value="Russian">Russian (Русский)</SelectItem>
-                          <SelectItem value="Japanese">Japanese (日本語)</SelectItem>
-                          <SelectItem value="Korean">Korean (한국어)</SelectItem>
-                          <SelectItem value="Chinese">Chinese (中文)</SelectItem>
-                          <SelectItem value="Arabic">Arabic (العربية)</SelectItem>
-                          <SelectItem value="Hindi">Hindi (हिन्दी)</SelectItem>
-                          <SelectItem value="Dutch">Dutch (Nederlands)</SelectItem>
-                          <SelectItem value="Polish">Polish (Polski)</SelectItem>
-                          <SelectItem value="Turkish">Turkish (Türkçe)</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="sourceLanguage" className="text-sm">Source Language</Label>
+                        <Select value={sourceLanguage} onValueChange={setSourceLanguage}>
+                          <SelectTrigger id="sourceLanguage">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Auto-detect">🔍 Auto-detect</SelectItem>
+                            <SelectItem value="English">English</SelectItem>
+                            <SelectItem value="Spanish">Spanish (Español)</SelectItem>
+                            <SelectItem value="French">French (Français)</SelectItem>
+                            <SelectItem value="German">German (Deutsch)</SelectItem>
+                            <SelectItem value="Italian">Italian (Italiano)</SelectItem>
+                            <SelectItem value="Portuguese">Portuguese (Português)</SelectItem>
+                            <SelectItem value="Russian">Russian (Русский)</SelectItem>
+                            <SelectItem value="Japanese">Japanese (日本語)</SelectItem>
+                            <SelectItem value="Korean">Korean (한국어)</SelectItem>
+                            <SelectItem value="Chinese">Chinese (中文)</SelectItem>
+                            <SelectItem value="Arabic">Arabic (العربية)</SelectItem>
+                            <SelectItem value="Hindi">Hindi (हिन्दी)</SelectItem>
+                            <SelectItem value="Dutch">Dutch (Nederlands)</SelectItem>
+                            <SelectItem value="Polish">Polish (Polski)</SelectItem>
+                            <SelectItem value="Turkish">Turkish (Türkçe)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="targetLanguage" className="text-sm">Target Language</Label>
+                        <Select value={targetLanguage} onValueChange={setTargetLanguage}>
+                          <SelectTrigger id="targetLanguage">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="English">English</SelectItem>
+                            <SelectItem value="Spanish">Spanish (Español)</SelectItem>
+                            <SelectItem value="French">French (Français)</SelectItem>
+                            <SelectItem value="German">German (Deutsch)</SelectItem>
+                            <SelectItem value="Italian">Italian (Italiano)</SelectItem>
+                            <SelectItem value="Portuguese">Portuguese (Português)</SelectItem>
+                            <SelectItem value="Russian">Russian (Русский)</SelectItem>
+                            <SelectItem value="Japanese">Japanese (日本語)</SelectItem>
+                            <SelectItem value="Korean">Korean (한국어)</SelectItem>
+                            <SelectItem value="Chinese">Chinese (中文)</SelectItem>
+                            <SelectItem value="Arabic">Arabic (العربية)</SelectItem>
+                            <SelectItem value="Hindi">Hindi (हिन्दी)</SelectItem>
+                            <SelectItem value="Dutch">Dutch (Nederlands)</SelectItem>
+                            <SelectItem value="Polish">Polish (Polski)</SelectItem>
+                            <SelectItem value="Turkish">Turkish (Türkçe)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   )}
                 </div>

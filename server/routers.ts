@@ -111,6 +111,7 @@ export const appRouter = router({
         text: z.string().min(1),
         voiceId: z.string(),
         voiceName: z.string(),
+        sourceLanguage: z.string().optional(),
         targetLanguage: z.string().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
@@ -118,25 +119,32 @@ export const appRouter = router({
         let textToGenerate = input.text;
         if (input.targetLanguage) {
           try {
-            // First detect the input language
-            const detectionResponse = await invokeLLM({
-              messages: [
-                {
-                  role: "system",
-                  content: "You are a language detection expert. Identify the language of the given text and respond with ONLY the language name in English (e.g., 'Spanish', 'French', 'Japanese'). Nothing else.",
-                },
-                {
-                  role: "user",
-                  content: input.text,
-                },
-              ],
-            });
-            const detectedLang = detectionResponse.choices[0].message.content;
-            const sourceLang = typeof detectedLang === 'string' ? detectedLang.trim() : 'Unknown';
+            let sourceLang = input.sourceLanguage;
             
-            console.log(`Detected input language: ${sourceLang}, translating to ${input.targetLanguage}`);
+            // Auto-detect if source language not specified
+            if (!sourceLang) {
+              const detectionResponse = await invokeLLM({
+                messages: [
+                  {
+                    role: "system",
+                    content: "You are a language detection expert. Identify the language of the given text and respond with ONLY the language name in English (e.g., 'Spanish', 'French', 'Japanese'). Nothing else.",
+                  },
+                  {
+                    role: "user",
+                    content: input.text,
+                  },
+                ],
+              });
+              const detectedLang = detectionResponse.choices[0].message.content;
+              sourceLang = typeof detectedLang === 'string' ? detectedLang.trim() : 'Unknown';
+              console.log(`Auto-detected input language: ${sourceLang}`);
+            } else {
+              console.log(`Using manually selected source language: ${sourceLang}`);
+            }
+            
+            console.log(`Translating from ${sourceLang} to ${input.targetLanguage}`);
 
-            // Then translate from detected language to target language
+            // Translate from source language to target language
             const translationResponse = await invokeLLM({
               messages: [
                 {

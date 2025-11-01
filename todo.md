@@ -38,3 +38,6 @@
 
 - [x] Add automatic input language detection
 - [x] Display detected language to user (via console logs)
+
+- [x] Add source language dropdown for manual selection
+- [x] Allow users to override automatic language detection
