@@ -9,7 +9,9 @@ import {
   getElevenLabsVoices, 
   createVoiceClone as createElevenLabsVoiceClone,
   generateSpeech,
-  deleteVoiceClone as deleteElevenLabsVoiceClone
+  deleteVoiceClone as deleteElevenLabsVoiceClone,
+  getUserCredits,
+  estimateCreditCost
 } from "./elevenlabs";
 import { 
   createVoiceClone, 
@@ -43,6 +45,21 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+  }),
+
+  credits: router({
+    // Get user's credit balance and subscription info
+    getBalance: publicProcedure.query(async () => {
+      const credits = await getUserCredits();
+      return credits;
+    }),
+    // Estimate credit cost for text
+    estimateCost: publicProcedure
+      .input(z.object({ text: z.string() }))
+      .query(({ input }) => {
+        const cost = estimateCreditCost(input.text.length);
+        return { estimatedCost: cost, textLength: input.text.length };
+      }),
   }),
 
   voices: router({

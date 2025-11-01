@@ -26,6 +26,26 @@ export interface TextToSpeechParams {
   outputFormat?: string;
 }
 
+export interface CreditInfo {
+  characterCount: number;
+  characterLimit: number;
+  canExtendCharacterLimit: boolean;
+  allowedToExtendCharacterLimit: boolean;
+  nextCharacterCountResetUnix: number;
+  voiceLimit: number;
+  maxVoiceAddEdits: number;
+  voiceAddEditCounter: number;
+  professionalVoiceLimit: number;
+  canExtendVoiceLimit: boolean;
+  canUseInstantVoiceCloning: boolean;
+  canUseProfessionalVoiceCloning: boolean;
+  currency: string;
+  status: string;
+  nextInvoice: {
+    amountDueCents: number;
+  };
+}
+
 /**
  * Get all available voices from ElevenLabs
  */
@@ -118,6 +138,44 @@ export async function generateSpeech(params: TextToSpeechParams): Promise<Buffer
 
   const arrayBuffer = await response.arrayBuffer();
   return Buffer.from(arrayBuffer);
+}
+
+/**
+ * Get user's credit/subscription information
+ */
+export async function getUserCredits(): Promise<CreditInfo | null> {
+  if (!ELEVENLABS_API_KEY) {
+    console.warn("ELEVENLABS_API_KEY is not configured");
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${ELEVENLABS_BASE_URL}/user/subscription`, {
+      headers: {
+        "xi-api-key": ELEVENLABS_API_KEY,
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`Failed to fetch credits: ${response.status} ${response.statusText}`);
+      return null;
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching user credits:", error);
+    return null;
+  }
+}
+
+/**
+ * Estimate credit cost for text-to-speech generation
+ * ElevenLabs charges approximately 1 credit per character
+ */
+export function estimateCreditCost(textLength: number): number {
+  // Rough estimation: 1 credit per character
+  return Math.ceil(textLength * 1.0);
 }
 
 /**

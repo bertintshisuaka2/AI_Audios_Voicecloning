@@ -68,3 +68,8 @@
 - [x] Add Quick Links section to dashboard
 
 - [x] Change yellow color scheme to white
+
+- [x] Add ElevenLabs credit balance checker
+- [x] Add credit usage estimator before generation
+- [x] Prevent generation attempts that exceed available balance
+- [x] Display warning when credits are low

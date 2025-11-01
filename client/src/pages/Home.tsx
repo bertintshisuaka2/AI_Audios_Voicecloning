@@ -31,6 +31,11 @@ export default function Home() {
 
   // Queries
   const { data: availableVoices, isLoading: voicesLoading } = trpc.voices.getAvailable.useQuery();
+  const { data: creditInfo } = trpc.credits.getBalance.useQuery();
+  const { data: costEstimate } = trpc.credits.estimateCost.useQuery(
+    { text },
+    { enabled: text.length > 0 }
+  );
   const { data: myClones, refetch: refetchClones } = trpc.voices.getMy.useQuery(undefined, {
     enabled: isAuthenticated,
   });
@@ -228,8 +233,20 @@ export default function Home() {
           <TabsContent value="generate" className="space-y-6">
             <Card className="max-w-3xl mx-auto">
               <CardHeader>
-                <CardTitle>Text to Speech</CardTitle>
-                <CardDescription>Enter text and select a voice to generate speech</CardDescription>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle>Text to Speech</CardTitle>
+                    <CardDescription>Enter text and select a voice to generate speech</CardDescription>
+                  </div>
+                  {creditInfo && (
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-white">
+                        {(creditInfo.characterLimit - creditInfo.characterCount).toLocaleString()} credits
+                      </div>
+                      <div className="text-xs text-muted-foreground">remaining</div>
+                    </div>
+                  )}
+                </div>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -256,6 +273,17 @@ export default function Home() {
                   <p className="text-xs text-amber-600">
                     ℹ️ Long text will be automatically split at sentence boundaries and merged into a single audio file.
                   </p>
+                )}
+                {costEstimate && creditInfo && (
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-black/30 border border-white/20">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-white">Estimated cost:</span>
+                      <span className="text-sm font-bold text-white">{costEstimate.estimatedCost.toLocaleString()} credits</span>
+                    </div>
+                    {costEstimate.estimatedCost > (creditInfo.characterLimit - creditInfo.characterCount) && (
+                      <span className="text-xs text-red-400 font-medium">⚠️ Insufficient credits</span>
+                    )}
+                  </div>
                 )}
                 </div>
 
@@ -390,7 +418,12 @@ export default function Home() {
 
                 <Button
                   onClick={handleGenerate}
-                  disabled={generateMutation.isPending || !text.trim() || !selectedVoiceId}
+                  disabled={
+                    generateMutation.isPending || 
+                    !text.trim() || 
+                    !selectedVoiceId ||
+                    Boolean(costEstimate && creditInfo && costEstimate.estimatedCost > (creditInfo.characterLimit - creditInfo.characterCount))
+                  }
                   className="w-full"
                   size="lg"
                 >
