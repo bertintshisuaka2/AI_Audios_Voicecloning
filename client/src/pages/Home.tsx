@@ -210,15 +210,25 @@ export default function Home() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
+                <div className="flex items-center justify-between">
                   <Label htmlFor="text">Text</Label>
-                  <Textarea
-                    id="text"
-                    placeholder="Enter the text you want to convert to speech..."
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    rows={6}
-                    className="resize-none"
-                  />
+                  <span className={`text-xs ${text.length > 10000 ? 'text-destructive font-semibold' : 'text-muted-foreground'}`}>
+                    {text.length.toLocaleString()} / 10,000 characters
+                  </span>
+                </div>
+                <Textarea
+                  id="text"
+                  placeholder="Enter the text you want to convert to speech..."
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  rows={6}
+                  className="resize-none"
+                />
+                {text.length > 10000 && (
+                  <p className="text-xs text-destructive">
+                    ⚠️ Text exceeds 10,000 character limit. Please shorten your text.
+                  </p>
+                )}
                 </div>
 
                 <div className="space-y-2">
@@ -352,7 +362,7 @@ export default function Home() {
 
                 <Button
                   onClick={handleGenerate}
-                  disabled={generateMutation.isPending || !text.trim() || !selectedVoiceId}
+                  disabled={generateMutation.isPending || !text.trim() || !selectedVoiceId || text.length > 10000}
                   className="w-full"
                   size="lg"
                 >

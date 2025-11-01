@@ -108,7 +108,7 @@ export const appRouter = router({
     // Generate speech from text
     generate: protectedProcedure
       .input(z.object({
-        text: z.string().min(1),
+        text: z.string().min(1).max(10000, "Text must not exceed 10,000 characters"),
         voiceId: z.string(),
         voiceName: z.string(),
         sourceLanguage: z.string().optional(),

@@ -41,3 +41,9 @@
 
 - [x] Add source language dropdown for manual selection
 - [x] Allow users to override automatic language detection
+
+## Bugs
+
+- [x] Fix ElevenLabs 10,000 character limit error
+- [x] Add text length validation before generation
+- [x] Add character counter to show remaining characters
