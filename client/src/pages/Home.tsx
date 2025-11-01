@@ -1,4 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+import PinLogin from "./PinLogin";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,6 +16,7 @@ import { toast } from "sonner";
 
 export default function Home() {
   const { user, loading: authLoading, isAuthenticated, logout } = useAuth();
+  const [isPinVerified, setIsPinVerified] = useState(false);
   const [text, setText] = useState("");
   const [selectedVoiceId, setSelectedVoiceId] = useState("");
   const [selectedVoiceName, setSelectedVoiceName] = useState("");
@@ -120,6 +122,11 @@ export default function Home() {
     toast.success("Share link copied to clipboard!");
   };
 
+  // Show PIN login first
+  if (!isPinVerified) {
+    return <PinLogin onSuccess={() => setIsPinVerified(true)} />;
+  }
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -178,15 +185,18 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-black shadow-lg border-b border-yellow-500">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {APP_LOGO && <img src={APP_LOGO} alt={APP_TITLE} className="w-10 h-10" />}
-            <h1 className="text-2xl font-bold text-gray-900">{APP_TITLE}</h1>
+          <div className="flex items-center gap-4">
+            <img src="/logo.png" alt="Divalaser" className="w-14 h-14 rounded-full border-2 border-yellow-500" />
+            <div>
+              <h1 className="text-2xl font-bold text-yellow-500">Divalaser Software Solutions</h1>
+              <p className="text-xs text-yellow-400/80">Voice TTS & Clone Platform</p>
+            </div>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">{user?.name || user?.email}</span>
-            <Button variant="outline" size="sm" onClick={() => logout()}>
+            <span className="text-sm text-yellow-400">{user?.name || user?.email}</span>
+            <Button variant="outline" size="sm" onClick={() => logout()} className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">
               <LogOut className="w-4 h-4 mr-2" />
               Logout
             </Button>

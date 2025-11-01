@@ -58,3 +58,7 @@
 - [x] Update UI to show chunking progress
 
 - [x] Change color scheme to yellow and black theme
+
+- [x] Add "Divalaser Software Solutions" branding at the top
+- [x] Add user photo to branding
+- [x] Create 4-digit PIN login page
