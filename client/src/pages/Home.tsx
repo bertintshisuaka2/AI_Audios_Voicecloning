@@ -5,10 +5,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { Loader2, Mic, Volume2, Download, Share2, Trash2, LogOut } from "lucide-react";
+import { Loader2, Mic, Volume2, Download, Share2, Trash2, LogOut, Languages } from "lucide-react";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 
@@ -19,6 +20,8 @@ export default function Home() {
   const [selectedVoiceName, setSelectedVoiceName] = useState("");
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [cloneName, setCloneName] = useState("");
+  const [enableTranslation, setEnableTranslation] = useState(false);
+  const [targetLanguage, setTargetLanguage] = useState("English");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Queries
@@ -82,6 +85,7 @@ export default function Home() {
       text: text.trim(),
       voiceId: selectedVoiceId,
       voiceName: selectedVoiceName,
+      targetLanguage: enableTranslation ? targetLanguage : undefined,
     });
   };
 
@@ -267,6 +271,52 @@ export default function Home() {
                     <p className="text-xs text-amber-600">
                       ⚠️ No voices available. Please add your ElevenLabs API key in Settings → Secrets to enable voice generation.
                     </p>
+                  )}
+                </div>
+
+                <div className="space-y-3 p-3 bg-muted/50 rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    <Languages className="w-4 h-4 text-muted-foreground" />
+                    <div className="flex-1">
+                      <Label htmlFor="translate" className="text-sm font-medium cursor-pointer">
+                        Enable Translation
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Translate text to another language before generating speech
+                      </p>
+                    </div>
+                    <Switch
+                      id="translate"
+                      checked={enableTranslation}
+                      onCheckedChange={setEnableTranslation}
+                    />
+                  </div>
+                  {enableTranslation && (
+                    <div className="space-y-2">
+                      <Label htmlFor="targetLanguage" className="text-sm">Target Language</Label>
+                      <Select value={targetLanguage} onValueChange={setTargetLanguage}>
+                        <SelectTrigger id="targetLanguage">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="English">English</SelectItem>
+                          <SelectItem value="Spanish">Spanish (Español)</SelectItem>
+                          <SelectItem value="French">French (Français)</SelectItem>
+                          <SelectItem value="German">German (Deutsch)</SelectItem>
+                          <SelectItem value="Italian">Italian (Italiano)</SelectItem>
+                          <SelectItem value="Portuguese">Portuguese (Português)</SelectItem>
+                          <SelectItem value="Russian">Russian (Русский)</SelectItem>
+                          <SelectItem value="Japanese">Japanese (日本語)</SelectItem>
+                          <SelectItem value="Korean">Korean (한국어)</SelectItem>
+                          <SelectItem value="Chinese">Chinese (中文)</SelectItem>
+                          <SelectItem value="Arabic">Arabic (العربية)</SelectItem>
+                          <SelectItem value="Hindi">Hindi (हिन्दी)</SelectItem>
+                          <SelectItem value="Dutch">Dutch (Nederlands)</SelectItem>
+                          <SelectItem value="Polish">Polish (Polski)</SelectItem>
+                          <SelectItem value="Turkish">Turkish (Türkçe)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   )}
                 </div>
 

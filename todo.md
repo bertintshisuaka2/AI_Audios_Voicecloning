@@ -27,3 +27,11 @@
 ## Bugs to Fix
 
 - [x] Fix ElevenLabs API "Unauthorized" error when fetching voices
+
+## New Features
+
+- [x] Add language translation switch for generated speech
+- [x] Translate text to English before generating speech with cloned voice
+
+- [x] Add support for translating to multiple languages (not just English)
+- [x] Add language selector dropdown for translation target

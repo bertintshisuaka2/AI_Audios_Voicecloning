@@ -3,6 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
+import { invokeLLM } from "./_core/llm";
 import { 
   getElevenLabsVoices, 
   createVoiceClone as createElevenLabsVoiceClone,
@@ -110,11 +111,35 @@ export const appRouter = router({
         text: z.string().min(1),
         voiceId: z.string(),
         voiceName: z.string(),
+        targetLanguage: z.string().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
+        // Translate text if requested
+        let textToGenerate = input.text;
+        if (input.targetLanguage) {
+          try {
+            const translationResponse = await invokeLLM({
+              messages: [
+                {
+                  role: "system",
+                  content: `You are a professional translator. Translate the given text to ${input.targetLanguage}. Only return the translated text, nothing else.`,
+                },
+                {
+                  role: "user",
+                  content: input.text,
+                },
+              ],
+            });
+            const content = translationResponse.choices[0].message.content;
+            textToGenerate = typeof content === 'string' ? content : input.text;
+          } catch (error) {
+            console.error("Translation failed, using original text:", error);
+          }
+        }
+
         // Generate speech using ElevenLabs
         const audioBuffer = await generateSpeech({
-          text: input.text,
+          text: textToGenerate,
           voiceId: input.voiceId,
         });
 
@@ -132,7 +157,7 @@ export const appRouter = router({
         // Save to database
         const audioFile = await createAudioFile({
           userId: ctx.user.id,
-          text: input.text,
+          text: textToGenerate,
           voiceId: input.voiceId,
           voiceName: input.voiceName,
           audioUrl,
