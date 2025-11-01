@@ -212,8 +212,13 @@ export default function Home() {
                 <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="text">Text</Label>
-                  <span className={`text-xs ${text.length > 10000 ? 'text-destructive font-semibold' : 'text-muted-foreground'}`}>
-                    {text.length.toLocaleString()} / 10,000 characters
+                  <span className="text-xs text-muted-foreground">
+                    {text.length.toLocaleString()} characters
+                    {text.length > 10000 && (
+                      <span className="text-amber-600 ml-1">
+                        (will be split into {Math.ceil(text.length / 9500)} chunks)
+                      </span>
+                    )}
                   </span>
                 </div>
                 <Textarea
@@ -225,8 +230,8 @@ export default function Home() {
                   className="resize-none"
                 />
                 {text.length > 10000 && (
-                  <p className="text-xs text-destructive">
-                    ⚠️ Text exceeds 10,000 character limit. Please shorten your text.
+                  <p className="text-xs text-amber-600">
+                    ℹ️ Long text will be automatically split at sentence boundaries and merged into a single audio file.
                   </p>
                 )}
                 </div>
@@ -362,7 +367,7 @@ export default function Home() {
 
                 <Button
                   onClick={handleGenerate}
-                  disabled={generateMutation.isPending || !text.trim() || !selectedVoiceId || text.length > 10000}
+                  disabled={generateMutation.isPending || !text.trim() || !selectedVoiceId}
                   className="w-full"
                   size="lg"
                 >

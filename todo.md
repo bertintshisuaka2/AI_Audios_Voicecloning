@@ -47,3 +47,12 @@
 - [x] Fix ElevenLabs 10,000 character limit error
 - [x] Add text length validation before generation
 - [x] Add character counter to show remaining characters
+
+- [ ] Add custom user photo as app logo
+
+## New Features
+
+- [x] Implement smart sentence-based text splitting for long texts
+- [x] Generate multiple audio chunks for texts over 10,000 characters
+- [x] Merge audio chunks into single continuous file
+- [x] Update UI to show chunking progress

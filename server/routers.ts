@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { invokeLLM } from "./_core/llm";
+import { generateLongSpeech } from "./audioChunker";
 import { 
   getElevenLabsVoices, 
   createVoiceClone as createElevenLabsVoiceClone,
@@ -108,7 +109,7 @@ export const appRouter = router({
     // Generate speech from text
     generate: protectedProcedure
       .input(z.object({
-        text: z.string().min(1).max(10000, "Text must not exceed 10,000 characters"),
+        text: z.string().min(1),
         voiceId: z.string(),
         voiceName: z.string(),
         sourceLanguage: z.string().optional(),
@@ -164,11 +165,16 @@ export const appRouter = router({
           }
         }
 
-        // Generate speech using ElevenLabs
-        const audioBuffer = await generateSpeech({
+        // Generate speech using ElevenLabs (with chunking for long texts)
+        const { audioBuffer, chunkCount } = await generateLongSpeech({
           text: textToGenerate,
           voiceId: input.voiceId,
+          userId: ctx.user.id,
         });
+        
+        if (chunkCount > 1) {
+          console.log(`Generated speech from ${chunkCount} chunks`);
+        }
 
         // Upload to S3
         const fileKey = `${ctx.user.id}/audio/${Date.now()}-${generateRandomSuffix()}.mp3`;
