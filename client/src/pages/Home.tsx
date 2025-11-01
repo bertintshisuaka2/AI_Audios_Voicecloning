@@ -187,18 +187,18 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <header className="bg-black shadow-lg border-b border-yellow-500">
+      <header className="bg-black shadow-lg border-b border-white">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <img src="/logo.png" alt="Divalaser" className="w-14 h-14 rounded-full border-2 border-yellow-500" />
+            <img src="/logo.png" alt="Divalaser" className="w-14 h-14 rounded-full border-2 border-white" />
             <div>
-              <h1 className="text-2xl font-bold text-yellow-500">Divalaser Software Solutions</h1>
-              <p className="text-xs text-yellow-400/80">Voice TTS & Clone Platform</p>
+              <h1 className="text-2xl font-bold text-white">Divalaser Software Solutions</h1>
+              <p className="text-xs text-gray-200/80">Voice TTS & Clone Platform</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-yellow-400">{user?.name || user?.email}</span>
-            <Button variant="outline" size="sm" onClick={() => logout()} className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">
+            <span className="text-sm text-gray-200">{user?.name || user?.email}</span>
+            <Button variant="outline" size="sm" onClick={() => logout()} className="border-white text-white hover:bg-white hover:text-black">
               <LogOut className="w-4 h-4 mr-2" />
               Logout
             </Button>
@@ -214,7 +214,7 @@ export default function Home() {
             <Button
               onClick={() => setCurrentPage("dashboard")}
               variant="outline"
-              className="mb-4 border-yellow-500/30 text-yellow-500 hover:bg-yellow-500/10"
+              className="mb-4 border-white/30 text-white hover:bg-white/10"
             >
               ← Back to Dashboard
             </Button>

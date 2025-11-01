@@ -88,25 +88,25 @@ export default function PinLogin({ onSuccess }: PinLoginProps) {
             <img 
               src="/logo.png" 
               alt="Divalaser" 
-              className="w-24 h-24 rounded-full border-4 border-yellow-500 shadow-lg shadow-yellow-500/50" 
+              className="w-24 h-24 rounded-full border-4 border-white shadow-lg shadow-white/50" 
             />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-yellow-500">Divalaser Software Solutions</h1>
-            <p className="text-yellow-400/80 mt-2">Voice TTS & Clone Platform</p>
+            <h1 className="text-3xl font-bold text-white">Divalaser Software Solutions</h1>
+            <p className="text-gray-200/80 mt-2">Voice TTS & Clone Platform</p>
           </div>
         </div>
 
         {/* PIN Entry Card */}
-        <Card className="bg-black/50 border-yellow-500/30 backdrop-blur">
+        <Card className="bg-black/50 border-white/30 backdrop-blur">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <div className="p-4 bg-yellow-500/10 rounded-full">
-                <Lock className="w-8 h-8 text-yellow-500" />
+              <div className="p-4 bg-white/10 rounded-full">
+                <Lock className="w-8 h-8 text-white" />
               </div>
             </div>
-            <CardTitle className="text-2xl text-yellow-500">Enter PIN</CardTitle>
-            <CardDescription className="text-yellow-400/60">
+            <CardTitle className="text-2xl text-white">Enter PIN</CardTitle>
+            <CardDescription className="text-gray-200/60">
               Enter your 4-digit PIN to access the platform
             </CardDescription>
           </CardHeader>
@@ -122,18 +122,18 @@ export default function PinLogin({ onSuccess }: PinLoginProps) {
                   value={digit}
                   onChange={(e) => handleChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="w-16 h-16 text-center text-2xl font-bold bg-black/50 border-yellow-500/50 text-yellow-500 focus:border-yellow-500 focus:ring-yellow-500"
+                  className="w-16 h-16 text-center text-2xl font-bold bg-black/50 border-white/50 text-white focus:border-white focus:ring-white"
                 />
               ))}
             </div>
-            <p className="text-xs text-center text-yellow-400/40 mt-6">
+            <p className="text-xs text-center text-gray-200/40 mt-6">
               Default PIN: 1234
             </p>
           </CardContent>
         </Card>
 
         {/* Footer */}
-        <p className="text-center text-yellow-400/40 text-sm">
+        <p className="text-center text-gray-200/40 text-sm">
           © 2025 Divalaser Software Solutions. All rights reserved.
         </p>
       </div>

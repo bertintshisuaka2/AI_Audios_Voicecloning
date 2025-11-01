@@ -66,3 +66,5 @@
 - [x] Create main dashboard after PIN login
 - [x] Add Recent Activity section to dashboard
 - [x] Add Quick Links section to dashboard
+
+- [x] Change yellow color scheme to white
