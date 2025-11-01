@@ -212,6 +212,28 @@ export default function Home() {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        {/* Low Credit Warning Banner */}
+        {creditInfo && (creditInfo.characterLimit - creditInfo.characterCount) < 5000 && (
+          <div className="max-w-3xl mx-auto mb-6 p-4 bg-amber-900/30 border border-amber-500/50 rounded-lg flex items-start gap-3">
+            <div className="text-amber-500 text-xl">⚠️</div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-amber-500 mb-1">Low Credit Warning</h3>
+              <p className="text-xs text-amber-200/80">
+                You have {(creditInfo.characterLimit - creditInfo.characterCount).toLocaleString()} credits remaining. 
+                Consider purchasing more credits to continue using the platform without interruption.
+              </p>
+              <a 
+                href="https://elevenlabs.io/pricing" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-xs text-amber-400 hover:text-amber-300 underline mt-2 inline-block"
+              >
+                Add Credits →
+              </a>
+            </div>
+          </div>
+        )}
+
         {currentPage === "dashboard" ? (
           <Dashboard onNavigate={setCurrentPage} />
         ) : (

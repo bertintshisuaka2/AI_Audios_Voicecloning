@@ -73,3 +73,6 @@
 - [x] Add credit usage estimator before generation
 - [x] Prevent generation attempts that exceed available balance
 - [x] Display warning when credits are low
+
+- [x] Add low credit notification when balance drops below threshold
+- [x] Display warning banner when credits are running low
