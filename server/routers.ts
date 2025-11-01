@@ -118,11 +118,30 @@ export const appRouter = router({
         let textToGenerate = input.text;
         if (input.targetLanguage) {
           try {
+            // First detect the input language
+            const detectionResponse = await invokeLLM({
+              messages: [
+                {
+                  role: "system",
+                  content: "You are a language detection expert. Identify the language of the given text and respond with ONLY the language name in English (e.g., 'Spanish', 'French', 'Japanese'). Nothing else.",
+                },
+                {
+                  role: "user",
+                  content: input.text,
+                },
+              ],
+            });
+            const detectedLang = detectionResponse.choices[0].message.content;
+            const sourceLang = typeof detectedLang === 'string' ? detectedLang.trim() : 'Unknown';
+            
+            console.log(`Detected input language: ${sourceLang}, translating to ${input.targetLanguage}`);
+
+            // Then translate from detected language to target language
             const translationResponse = await invokeLLM({
               messages: [
                 {
                   role: "system",
-                  content: `You are a professional translator. Translate the given text to ${input.targetLanguage}. Only return the translated text, nothing else.`,
+                  content: `You are a professional translator. The input text is in ${sourceLang}. Translate it to ${input.targetLanguage}. Only return the translated text, nothing else.`,
                 },
                 {
                   role: "user",

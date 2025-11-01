@@ -35,3 +35,6 @@
 
 - [x] Add support for translating to multiple languages (not just English)
 - [x] Add language selector dropdown for translation target
+
+- [x] Add automatic input language detection
+- [x] Display detected language to user (via console logs)

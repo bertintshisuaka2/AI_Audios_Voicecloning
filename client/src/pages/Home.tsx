@@ -282,7 +282,7 @@ export default function Home() {
                         Enable Translation
                       </Label>
                       <p className="text-xs text-muted-foreground">
-                        Translate text to another language before generating speech
+                        Auto-detect input language and translate to target language
                       </p>
                     </div>
                     <Switch
