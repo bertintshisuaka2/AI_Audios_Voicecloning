@@ -56,3 +56,5 @@
 - [x] Generate multiple audio chunks for texts over 10,000 characters
 - [x] Merge audio chunks into single continuous file
 - [x] Update UI to show chunking progress
+
+- [x] Change color scheme to yellow and black theme
