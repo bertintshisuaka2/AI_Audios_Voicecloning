@@ -76,3 +76,5 @@
 
 - [x] Add low credit notification when balance drops below threshold
 - [x] Display warning banner when credits are running low
+
+- [x] Create comprehensive README.md documentation
