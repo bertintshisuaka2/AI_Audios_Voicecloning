@@ -1,5 +1,6 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import PinLogin from "./PinLogin";
+import Dashboard from "./Dashboard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +18,7 @@ import { toast } from "sonner";
 export default function Home() {
   const { user, loading: authLoading, isAuthenticated, logout } = useAuth();
   const [isPinVerified, setIsPinVerified] = useState(false);
+  const [currentPage, setCurrentPage] = useState("dashboard");
   const [text, setText] = useState("");
   const [selectedVoiceId, setSelectedVoiceId] = useState("");
   const [selectedVoiceName, setSelectedVoiceName] = useState("");
@@ -205,12 +207,23 @@ export default function Home() {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="generate" className="space-y-6">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
-            <TabsTrigger value="generate">Generate</TabsTrigger>
-            <TabsTrigger value="clone">Clone Voice</TabsTrigger>
-            <TabsTrigger value="library">My Library</TabsTrigger>
-          </TabsList>
+        {currentPage === "dashboard" ? (
+          <Dashboard onNavigate={setCurrentPage} />
+        ) : (
+          <>
+            <Button
+              onClick={() => setCurrentPage("dashboard")}
+              variant="outline"
+              className="mb-4 border-yellow-500/30 text-yellow-500 hover:bg-yellow-500/10"
+            >
+              ← Back to Dashboard
+            </Button>
+            <Tabs value={currentPage} onValueChange={setCurrentPage} className="space-y-6">
+              <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
+                <TabsTrigger value="generate">Generate</TabsTrigger>
+                <TabsTrigger value="clone">Clone Voice</TabsTrigger>
+                <TabsTrigger value="library">My Library</TabsTrigger>
+              </TabsList>
 
           <TabsContent value="generate" className="space-y-6">
             <Card className="max-w-3xl mx-auto">
@@ -539,7 +552,9 @@ export default function Home() {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+            </Tabs>
+          </>
+        )}
       </main>
     </div>
   );

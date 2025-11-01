@@ -62,3 +62,7 @@
 - [x] Add "Divalaser Software Solutions" branding at the top
 - [x] Add user photo to branding
 - [x] Create 4-digit PIN login page
+
+- [x] Create main dashboard after PIN login
+- [x] Add Recent Activity section to dashboard
+- [x] Add Quick Links section to dashboard
