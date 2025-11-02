@@ -78,3 +78,5 @@
 - [x] Display warning banner when credits are running low
 
 - [x] Create comprehensive README.md documentation
+
+- [ ] Push project to GitHub repository
